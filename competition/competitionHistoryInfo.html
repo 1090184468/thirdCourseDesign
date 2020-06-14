@@ -8,7 +8,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="layui/css/layui.css" media="all">
 		<script src="layui/layui.js"></script>
-
+		<link rel="icon" href="assets/ico/apple-touch-icon-57-precomposed.ico">
+		<link rel="stylesheet" href="css/modifyPassword.css"  media="all">
 		<style type="text/css">
 			.layui-table-cell {
 				text-align: center;
@@ -42,6 +43,7 @@
 
 				</table>
 			</div>
+			 <div id="modifyPasswordLayer"></div>
 			<script type="text/html" id="imgtemp">
 				<img  src="{{d.competitionImg}}" style="width:200px;height:150px">
 			</script>
@@ -57,7 +59,7 @@
 					var form = layui.form;
 					var util = layui.util
 					  ,laydate = layui.laydate;
-		
+					
 					//第一个实例
 					table.render({
 						elem: '#competitionInfo',
@@ -128,7 +130,16 @@
 					console.log($(this).attr('isEnrolled'))
 					if($(this).attr('isEnrolled')=='1'){
 						alert(this.id.substr(4));
+					}else{
+							layer.msg('你在这场竞赛中没有队伍!', {time:1000,icon: 5,shift:6});
 					}
+				})
+				$("#updatePassword").click(function() {
+								showModifyLayer();
+								This=this;
+								setTimeout(function(){
+									$(This).parent("dd").removeClass("layui-this")
+								},500)
 				})
 				//日期范围
 				  laydate.render({

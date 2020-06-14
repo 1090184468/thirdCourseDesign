@@ -10,7 +10,7 @@
 		<script src="layui/layui.js"></script>
 
 <link rel="icon" href="assets/ico/apple-touch-icon-57-precomposed.ico">
-
+  <link rel="stylesheet" href="css/modifyPassword.css"  media="all">
 	</head>
 	<body>
 		<div class="layui-layout layui-layout-admin">
@@ -84,7 +84,7 @@
 					</div>
 				</form>
 			</div>
-
+			 <div id="modifyPasswordLayer"></div>
 			<script src="assets/js/jquery-1.11.1.min.js"></script>
 			<script src="js/jquery.cookie.js"></script>
 			<script src="js/cookie_tool.js"></script>
@@ -115,7 +115,13 @@
 							var resultBean = JSON.parse(result);
 						}
 					})
-
+					$("#updatePassword").click(function() {
+									showModifyLayer();
+									This=this;
+									setTimeout(function(){
+										$(This).parent("dd").removeClass("layui-this")
+									},500)
+					})
 					//自定义验证规则
 					form.verify({
 						username: [

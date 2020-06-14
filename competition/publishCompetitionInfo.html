@@ -8,7 +8,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="layui/css/layui.css" media="all">
 		<script src="layui/layui.js"></script>
-
+		<link rel="icon" href="assets/ico/apple-touch-icon-57-precomposed.ico">
+		<link rel="stylesheet" href="css/modifyPassword.css"  media="all">
 		<style>
 
 			.layui-form-label{
@@ -95,7 +96,7 @@
 					</div>
 				</form>
 			</div>
-
+			<div id="modifyPasswordLayer"></div>
 			<script src="assets/js/jquery-1.11.1.min.js"></script>
 			<script src="js/jquery.cookie.js"></script>
 			<script src="js/cookie_tool.js"></script>
@@ -137,6 +138,13 @@
 						elem: '#competitionEndTime',
 						type: 'datetime'
 					});
+					$("#updatePassword").click(function() {
+									showModifyLayer();
+									This=this;
+									setTimeout(function(){
+										$(This).parent("dd").removeClass("layui-this")
+									},500)
+					})
 					/*$.ajax({
 						type: "POST",
 						url: "",

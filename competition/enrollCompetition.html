@@ -9,7 +9,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="layui/css/layui.css" media="all">
 		<script src="layui/layui.js"></script>
-
+		<link rel="stylesheet" href="css/modifyPassword.css"  media="all">
+		<link rel="icon" href="assets/ico/apple-touch-icon-57-precomposed.ico">
 		<style type="text/css">
 			.layui-table-cell {
 				text-align: center;
@@ -42,6 +43,7 @@
 
 				</table>
 			</div>
+			<div id="modifyPasswordLayer"></div>
 			<script type="text/html" id="imgtemp">
 				<img  src="{{d.competitionImg}}" style="width:200px;height:150px">
 			</script>
@@ -188,7 +190,13 @@
 							layer.msg('你还没有团队哦!快去申请或加入吧', {time:1000,icon: 5,shift:6});
 						}
 					})
-				
+					$("#updatePassword").click(function() {
+									showModifyLayer();
+									This=this;
+									setTimeout(function(){
+										$(This).parent("dd").removeClass("layui-this")
+									},500)
+					})
 					table.on('tool(competitionInfo)', function(obj) {
 						var data = obj.data;
 						if (obj.event == 'enroll') {

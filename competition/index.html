@@ -9,6 +9,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="layui/css/layui.css"  media="all">
   <script src="layui/layui.js"></script>
+  <link rel="icon" href="assets/ico/apple-touch-icon-57-precomposed.ico">
+  <link rel="stylesheet" href="css/modifyPassword.css"  media="all">
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -28,7 +30,7 @@
 		  	
 		  
 	  </div>
-	  
+	  <div id="modifyPasswordLayer"></div>
 	  <div class="layui-footer" align="center">
 	    © BLOOM版权所有  &nbsp; 2020/6/1-2020/7/2
 	  </div>
@@ -41,11 +43,6 @@
 		layui.use(['carousel', 'form'], function(){
 		  var carousel = layui.carousel
 		  ,form = layui.form;
-		  
-		 
-		  
-		 
-		  
 		  //设定各种参数
 		  var ins3 = carousel.render({
 		    elem: '#test3',
@@ -65,7 +62,13 @@
 		      ins3.reload(options);
 		    }
 		  };
-		  
+		  $("#updatePassword").click(function() {
+				showModifyLayer();
+				This=this;
+				setTimeout(function(){
+					$(This).parent("dd").removeClass("layui-this")
+				},500)
+		  })
 		  //监听开关
 		  form.on('switch(autoplay)', function(){
 		    ins3.reload({

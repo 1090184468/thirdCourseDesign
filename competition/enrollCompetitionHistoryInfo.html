@@ -8,7 +8,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="layui/css/layui.css" media="all">
 		<script src="layui/layui.js"></script>
-
+		<link rel="icon" href="assets/ico/apple-touch-icon-57-precomposed.ico">
+		<link rel="stylesheet" href="css/modifyPassword.css"  media="all">
 		<style type="text/css">
 			.layui-table-cell {
 				text-align: center;
@@ -77,6 +78,7 @@
 
 				</table>
 			</div>
+			 <div id="modifyPasswordLayer"></div>
 			<script type="text/html" id="imgtemp">
 				<img  src="{{d.competitionImg}}" style="width:200px;height:150px">
 			</script>
@@ -175,7 +177,13 @@
 						,range: true
 					  });
 					
-
+					$("#updatePassword").click(function() {
+									showModifyLayer();
+									This=this;
+									setTimeout(function(){
+										$(This).parent("dd").removeClass("layui-this")
+									},500)
+					})
 					/* $.ajax({
 		  				type:"POST",
 		  				url:"",

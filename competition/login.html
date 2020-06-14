@@ -91,7 +91,6 @@
 			$("#password").val("");
 		}
 		function doLogin(){
-			$.cookie("type",0);
 			
 			var username=$("#username").val();
 			if(username==""){
@@ -119,11 +118,11 @@
 				},
 				success:function(result){
 					layer.close(index);  
-					var resultBean=JSON.parse(result);
-					if(result=="true"){
-						$.cookie("username",username);
-						$.cookie("password",password);
-						$.cookie("TOKEN",resultBean.token);
+					if(result.code=="200"){
+						$.cookie("username",result.user.username);
+						$.cookie("password",result.user.password);
+						$.cookie("TOKEN",result.user.token);
+						$.cookie("type",result.user.type);
 						window.location.href='Index';
 					}else{
 						layer.msg('用户名或密码错误', {time:1000,icon: 2,shift:6});

@@ -168,6 +168,8 @@
 						console.log($(this).attr('isEnrolled'))
 						if($(this).attr('isEnrolled')=='1'){
 							alert(this.id.substr(4));
+						}else{
+							layer.msg('你没有参加这项竞赛', {time:1000,icon: 5,shift:6});
 						}
 					})
 					//日期范围

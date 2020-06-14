@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="layui/css/layui.css" media="all">
+		<script src="layui/layui.js"></script>
+
+		<style type="text/css">
+			.layui-table-cell {
+				text-align: center;
+				height: auto;
+				white-space: normal;
+			}
+
+			.layui-border-box {
+				margin: 0 auto !important;
+				height: 80%;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div class="layui-layout layui-layout-admin">
+			<div class="Header"></div>
+			
+			<!-- 左边功能栏上的选项 -->
+			<div class="Left"></div>
+			<div class="layui-body" style="display: block;justify-content: center;align-items: center;padding: 20px;">
+				<p id="welcome" style="text-align:center;line-height:100%; color:#6ea1ff;margin-bottom: 10px;font-size:30px;">所有竞赛历史</p>
+				<div class="demoTable" style="margin-bottom: 5px;">
+				  搜索开赛时间区间：
+				  <div class="layui-inline">
+				    <input class="layui-input" name="id" id="startCompetitionRange" autocomplete="off">
+				  </div>
+				  <button class="layui-btn" data-type="reload">搜索</button>
+				</div>
+				<table id="competitionInfo" lay-filter="competitionInfo" style="">
+
+				</table>
+			</div>
+			<script type="text/html" id="imgtemp">
+				<img  src="{{d.competitionImg}}" style="width:200px;height:150px">
+			</script>
+		
+			<script src="assets/js/jquery-1.11.1.min.js"></script>
+			<script src="js/jquery.cookie.js"></script>
+			<script src="js/cookie_tool.js"></script>
+			<script>
+				$("#exit").click(function() {
+					exit();
+				})
+				
+				layui.use(['table','util','laydate'], function() {
+					//监听行工具事件
+					var $ = layui.$;
+					var table = layui.table;
+					var form = layui.form;
+					var util = layui.util
+					  ,laydate = layui.laydate;
+		
+					//第一个实例
+					table.render({
+						elem: '#competitionInfo',
+						id: 'Reload',
+						page: true //开启分页
+							,
+						text: {
+							none: '没有竞赛信息'
+						},
+						cols: [
+							[ //表头
+							  {field: 'competitionImg',title: '竞赛图片',unresize:true,align: 'center',templet: '#imgtemp'}
+							, {field: 'competitionName',title: '竞赛名',unresize:true,align: 'center'}
+							, {field: 'enrollStartTime',title: '竞赛报名时间',unresize:true,align: 'center',templet: function(d) {
+										return d.enrollStartTime+"<br>至 "+d.enrollEndTime;
+								}}
+							, {field: 'startCompetition',title: '竞赛开赛时间',unresize:true,align: 'center',templet: function(d) {
+										return d.enrollStartTime+"<br>至 "+d.endCompetition;
+								}}
+					
+							, {field: 'type',title: '竞赛类型',unresize:true,align: 'center',templet: function(d) {
+										return d.type == 1 ? "团队赛/<a id='team"+d.competitionId+"' isEnrolled='"+d.isEnrolled+"' class='myTeam' style='color:red;cursor:pointer'>我的团队</a>" : "个人赛"
+								}}
+							, {field: 'teamNum',title: '人数限制/每队',unresize:true,align: 'center',templet: function(d) {
+										if(d.type==0){
+											return 1;
+										}
+										return d.teamNum;
+								}}
+							, {field: 'num',title: '当前参赛人数',unresize:true,align: 'center',templet: function(d) {
+										return d.num;
+								}}
+							, {field: 'duration',title: '竞赛时长',unresize:true,align: 'center',templet: function(d) {
+										return d.duration;
+								}}
+							]
+						],
+						data: [{
+							'competitionId':'5',
+							'competitionName': '广西民族大学大赛',
+							'competitionImg': 'images/1.jpg',
+							'enrollStartTime': '2020-6-4 21:10:00',
+							'enrollEndTime': '2020-6-5 21:10:00',
+							'startCompetition': '2020-6-4 21:10:00',
+							'endCompetition':'2020-6-5 21:10:00',
+							'type': 1,
+							'num':200,
+							'teamNum':5,
+							'duration':'5小时',
+							'isEnrolled':1
+						},{
+							'competitionId':'6',
+							'competitionName': '广西民族大学大赛',
+							'competitionImg': 'images/1.jpg',
+							'enrollStartTime': '2020-6-4 21:10:00',
+							'enrollEndTime': '2020-6-8 21:10:00',
+							'startCompetition': '2020-6-4 21:10:00',
+							'endCompetition':'2020-6-5 21:10:00',
+							'type': 0,
+							'num':200,
+							'teamNum':1,
+							'duration':'5小时',
+							'isEnrolled':1
+						}
+						]
+					});
+				$(".myTeam").click(function(){
+					console.log($(this).attr('isEnrolled'))
+					if($(this).attr('isEnrolled')=='1'){
+						alert(this.id.substr(4));
+					}
+				})
+				//日期范围
+				  laydate.render({
+				    elem: '#startCompetitionRange'
+				    ,type: 'datetime'
+					,range: true
+				  });
+					table.on('tool(competitionInfo)', function(obj) {
+						var data = obj.data;
+						if (obj.event == 'enroll') {
+							if (data.type == "0") {
+
+							} else if (data.type == "1") {
+								layer.open({
+									type: 1,
+									area: ['300px', '200px'],
+									title: '输入加入的队伍ID',
+									content: $("#joinTeam"),
+									shade: 0,
+									btn: ['提交', '自己创建队伍'],
+									btn1: function(index, layero) {
+										var kk = $("#teamId").val();
+										alert(kk);
+									},
+									btn2: function(index, layero) {
+										layer.closeAll();
+										layer.open({
+											type: 1,
+											area: ['300px', '200px'],
+											title: '输入创建的队伍的名字',
+											content: $("#createTeam"),
+											shade: 0,
+											btn: ['提交', '取消'],
+											btn1: function(index, layero) {
+												var teamName=$("#teamName").val();
+												var teamNamePattern=/^[a-zA-Z0-9\u4E00-\u9FA5]{2,10}$/;
+												if(!teamNamePattern.test(teamName)){
+													layer.msg('队伍名格式不对哦^-^ 要2-10位中文,数字,大小写字母组合', {time:1000,icon: 5,shift:6});
+													return false;
+												}
+												
+											},
+											btn2: function(index, layero) {
+												layer.closeAll();
+												return false;
+											},
+											cancel: function(layero, index) {
+												layer.closeAll();
+											}
+										
+										});
+										return false;
+									},
+									cancel: function(layero, index) {
+										layer.closeAll();
+									}
+
+								});
+							}
+						}
+					});
+
+					/* $.ajax({
+		  				type:"POST",
+		  				url:"",
+		  				data:{
+		  				},
+		  				beforeSend:function(){
+		  					index = layer.msg("处理中",{icon:16}); //换了种风格
+		  				},
+		  				success:function(result){
+		  					layer.close(index);  
+		  					window.rankGoodsId=result;
+		  				}
+		  			}) */
+					var active = {
+					    reload: function(){
+					      var startCompetitionRange = $('#startCompetitionRange').val();
+						  startCompetition=startCompetitionRange.split(" - ")[0];
+						  endCompetition=startCompetitionRange.split(" - ")[1];
+					      //执行重载
+					      table.reload('Reload', {
+					        page: {
+					          curr: 1 //重新从第 1 页开始
+					        }
+					        ,where: {
+					            'startCompetition': startCompetition,
+								'endCompetition':endCompetition,
+					        }
+					      });
+					    }
+					  };
+					  
+					  $('.demoTable .layui-btn').on('click', function(){
+					    var type = $(this).data('type');
+					    active[type] ? active[type].call(this) : '';
+					  });
+				});
+			</script>
+			<div class="layui-footer" align="center">
+				© BLOOM版权所有 &nbsp; 2020/6/1-2020/7/2
+			</div>
+		</div>
+		<script>
+			layui.use('element', function() {
+				var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+				//监听导航点击
+				element.on('nav(demo)', function(elem) {
+					//console.log(elem)
+					//layer.msg(elem.text());
+				});
+			});
+		</script>
+	</body>
+</html>

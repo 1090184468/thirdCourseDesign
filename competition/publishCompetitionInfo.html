@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="layui/css/layui.css" media="all">
+		<script src="layui/layui.js"></script>
+
+		<style>
+
+			.layui-form-label{
+				width: 100px;
+			}
+			
+		</style>
+
+	</head>
+	<body>
+		<div class="layui-layout layui-layout-admin">
+			<div class="Header"></div>
+			<!-- 左边功能栏上的选项 -->
+			<div class="Left"></div>
+			<div class="layui-body" style="display: block;justify-content: center;align-items: center;padding: 20px;">
+				<p id="welcome" style="text-align:center;line-height:100%; color:#6ea1ff;margin-bottom: 10px;font-size:30px;">发布学科竞赛信息</p>
+				<form class="layui-form" action="" style="margin: 0 auto;">
+					<div class="layui-form-item">
+						<label class="layui-form-label">竞赛名：</label>
+						<div class="layui-input-inline">
+							<input id="competitionName" type="text" name="competitionName" lay-verify="competitionName" required="required"
+							 autocomplete="off" placeholder="请输入竞赛名" class="layui-input">
+						</div>
+					</div>
+
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">报名开始时间：</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="enrollCompetitionStartTime" id="enrollCompetitionStartTime" lay-verify="enrollCompetitionStartTime"
+							 placeholder="请输入竞赛报名开始时间" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">报名结束时间：</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="enrollCompetitionEndTime" id="enrollCompetitionEndTime" lay-verify="enrollCompetitionEndTime"
+							 placeholder="请输入竞赛报名结束时间" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开赛开始时间：</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="competitionStartTime" id="competitionStartTime" lay-verify="competitionStartTime"
+							 placeholder="请输入竞赛开赛开始时间" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开赛结束时间：</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="competitionEndTime" id="competitionEndTime" lay-verify="competitionEndTime"
+							 placeholder="请输入竞赛开赛结束时间" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">竞赛类型：</label>
+						<div class="layui-input-inline">
+							<select name="type" id="type" lay-filter="type" >
+								<option value="0">个人赛</option>
+								<option value="1">团体赛</option>
+							</select>
+						</div>
+						<div id="teamNum" style="display: none;">
+							<label class="layui-form-label">团队人数：</label>
+							<div class="layui-input-inline">
+								<input id="num" type="number" max="5" min="1" value="1" name="num" lay-verify="num" required="required"
+								 autocomplete="off" placeholder="请输入团队人数,上限5人" class="layui-input">
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-form-text">
+							<label class="layui-form-label" id="profile">竞赛简介：</label>
+							<div class="layui-input-inline" style="width: 60%;">
+								<textarea id="competitionProfile" placeholder="请输入内容" class="layui-textarea"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<script src="assets/js/jquery-1.11.1.min.js"></script>
+			<script src="js/jquery.cookie.js"></script>
+			<script src="js/cookie_tool.js"></script>
+			<!-- <script src="layer/layer.js"></script> -->
+			<script>
+				
+				$("#exit").click(function() {
+					exit();
+				})
+				
+				layui.use(['form', 'layedit', 'laydate', 'layer'], function() {
+					var form = layui.form,
+						layer = layui.layer,
+						layedit = layui.layedit,
+						laydate = layui.laydate;
+					form.on('select(type)', function(data){
+						if(data.value==1){
+							$("#teamNum").show();
+						}else{
+							$("#teamNum").hide();
+						}
+					
+					});  
+					//日期
+					laydate.render({
+						elem: '#enrollCompetitionStartTime',
+						type: 'datetime'
+					});
+					//日期
+					laydate.render({
+						elem: '#enrollCompetitionEndTime',
+						type: 'datetime'
+					});
+					//日期
+					laydate.render({
+						elem: '#competitionStartTime',
+						type: 'datetime'
+					});
+					//日期
+					laydate.render({
+						elem: '#competitionEndTime',
+						type: 'datetime'
+					});
+					/*$.ajax({
+						type: "POST",
+						url: "",
+						data: {},
+						beforeSend: function() {
+							index = layer.msg('加载中。。', {
+								icon: 16
+							});
+						},
+						success: function(result) {
+							layer.close(index);
+							var resultBean = JSON.parse(result);
+						}
+					})*/
+
+					//自定义验证规则
+					form.verify({
+						competitionName: [
+							/^[a-zA-Z0-9\u4E00-\u9FA5]{4,20}$/, '竞赛名格式不对哦^-^ 要4-20位中文,数字,大小写字母组合',
+						],
+						type: function(value) {
+							if (value == "") {
+								return '竞赛类型不能为空';
+							}
+						},
+						enrollCompetitionStartTime:function(value){
+							if(value==""){
+								return '报名竞赛开始时间不能为空';
+							}
+						},
+						enrollCompetitionEndTime:function(value){
+							if(value==""){
+								return '报名竞赛结束时间不能为空';
+							}
+							if(value<$("#enrollCompetitionStartTime").val()){
+								return '报名竞赛结束时间不能小于报名竞赛开始时间';	
+							}
+						},
+						competitionStartTime:function(value){
+							if(value==""){
+								return '竞赛开始时间不能为空';
+							}
+						},
+						competitionEndTime:function(){
+							if(value==""){
+								return '竞赛结束时间不能为空';
+							}
+							if(value<$("#competitionStartTime").val()){
+								return '竞赛开赛结束时间不能小于竞赛开赛开始时间';	
+							}
+						},
+						content: function(value) {
+							layedit.sync(editIndex);
+						}
+					});
+
+					//监听提交
+					form.on('submit(submit)', function(data) {
+						layer.alert(JSON.stringify(data.field), {
+							title: '最终的提交信息'
+						})
+						return false;
+					});
+
+				});
+			</script>
+			<div class="layui-footer" align="center">
+				© BLOOM版权所有 &nbsp; 2020/6/1-2020/7/2
+			</div>
+		</div>
+		<script>
+			layui.use('element', function() {
+				var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+				//监听导航点击
+				element.on('nav(demo)', function(elem) {
+					//console.log(elem)
+					//layer.msg(elem.text());
+				});
+			});
+		</script>
+	</body>
+</html>

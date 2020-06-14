@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>网上购物系统</title>
+
+      
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="assets/css/form-elements.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+
+        
+        
+        <link rel="icon" href="assets/ico/apple-touch-icon-57-precomposed.ico">
+		<script src="assets/js/jquery-1.11.1.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.backstretch.min.js"></script>
+        <script src="assets/js/scripts.js"></script>
+    </head>
+
+    <body>
+
+        <!-- Top content -->
+        <div class="top-content">
+        	
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row" style="color:black">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1><strong>学科竞赛管理信息系统</strong> 登录页面</h1>
+                            <div class="description">
+                            	<p>
+	                            	欢迎来到学科竞赛管理信息系统登录页面
+                            	</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        	<div class="form-top">
+                        		<div class="form-top-left">
+                        			<h3>登录到学科竞赛管理信息系统</h3>
+                            		<p>请输入你的账号和密码                  
+                            			
+                            			<br>无账号？ 请点击这里 <a href="register.html">立即注册</a>
+                            		</p>
+                        		</div>
+                        		<div class="form-top-right">
+                        			<i class="fa fa-key"></i>
+                        		</div>
+                            </div>
+                            <div class="form-bottom">
+			                    <form role="form" onsubmit="return false"  method="post" class="login-form">
+			                    	<div class="form-group">
+			                    		<label class="sr-only" for="form-username">Username</label>
+			                        	<input type="text" name="username" placeholder="用户名" class="form-username form-control" id="username">
+			                        </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-password">Password</label>
+			                        	<input type="password" name="password" placeholder="密码" class="form-password form-control" id="password">
+			                        </div>
+			                        <button type="button" class="btn" onclick="doLogin()">登录</button>
+			                        <button type="button" class="btn" onclick="reset()" style="margin-top:10px">重置</button>
+			                    </form>
+		                    </div>
+                        </div>
+                    </div>
+          
+                </div>
+            </div>
+            
+        </div>
+        
+
+        
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+    <script src="layer/layer.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+	<script>
+		function reset(){
+			$("#username").val("");
+			$("#password").val("");
+		}
+		function doLogin(){
+			$.cookie("type",0);
+			
+			var username=$("#username").val();
+			if(username==""){
+
+				layer.msg('用户名不能为空', {time:2000,icon: 5,shift:6});
+				return;
+			}
+			var password=$("#password").val();
+			if(password==""){
+
+				layer.msg('密码不能为空', {time:2000,icon: 5,shift:6});
+				return;
+			}
+			
+			var index=0;
+			$.ajax({
+				type:"POST",
+				url:"DoLogin",
+				data:{
+					"username":username,
+					"password":password
+				},
+				beforeSend:function(){
+					index = layer.msg("处理中",{icon:16}); //换了种风格
+				},
+				success:function(result){
+					layer.close(index);  
+					var resultBean=JSON.parse(result);
+					if(result=="true"){
+						$.cookie("username",username);
+						$.cookie("password",password);
+						$.cookie("TOKEN",resultBean.token);
+						window.location.href='Index';
+					}else{
+						layer.msg('用户名或密码错误', {time:1000,icon: 2,shift:6});
+					}
+				}
+			})
+		}
+	</script>
+</html>

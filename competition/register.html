@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title> 网上购物平台 </title>
+    <!-- Meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Gadget Sign Up Form Responsive Widget, Audio and Video players, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design"
+    />
+    <link rel="icon" href="assets/ico/apple-touch-icon-57-precomposed.ico">
+    <!-- Meta tags -->
+    <!-- font-awesome icons -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- //font-awesome icons -->
+    <!--stylesheets-->
+    <link href="css/style.css" rel='stylesheet' type='text/css' media="all">
+	<link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <!--//style sheet end here-->
+   <script src="assets/js/jquery-1.11.1.min.js"></script>
+
+   <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+   <script src="assets/js/jquery.backstretch.min.js"></script>
+   <script src="assets/js/scripts.js"></script>
+</head>
+<body class="container" style="background: url(assets/img/backgrounds/1.jpg);background-size: 100% 100%;width: 100%;height: 100%;">
+    <h1 class="error"  style="color: #FFF;">注册</h1>
+	<!---728x90--->
+	
+    <div class="w3layouts-two-grids">
+	<!---728x90--->
+        <div class="mid-class">
+            <div class="img-right-side">
+                <h3  style="color: #FFF;">学科竞赛管理信息系统</h3>
+                <p  style="color: #FFF;">这里有优质的学科竞赛，期待你的加入</p>
+                
+            </div>
+            <div class="txt-left-side" style="padding: 1em 2em 1em;">
+                <h2> 这 里 注 册 </h2>
+                <form action="RegisterUser" method="post">
+                    <div class="form-left-to-w3l">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        <input type="text" id="username" name="username" placeholder="用户名" required>
+
+                        <div class="clear"></div>
+                    </div>
+                    <div class="form-left-to-w3l">
+                        <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+                        <input type="text"  id="user_phone"  name="user_phone" placeholder="你的手机号码" required>
+
+                        <div class="clear" ></div>
+                    </div>
+                
+                    <div class="form-left-to-w3l ">
+
+                        <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                        <input type="password"  id="password"  name="password" placeholder="你的密码" required>
+                        <div class="clear"></div>
+                    </div>
+					<div class="form-left-to-w3l ">
+					    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+					    <input type="password"  id="repassword"  name="repassword" placeholder="重复输入你的密码" required>
+					    <div class="clear"></div>
+					</div>
+                    <div class="form-left-to-w3l">
+                        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                        <!-- <label class="radio-inline">
+                         <input type="radio" name="gender" checked="checked" value="1">男
+                       </label>
+                       <label class="radio-inline">
+                         <input type="radio" name="gender"  value="0">女
+                       </label> -->
+					   <div style="padding-left: 14px;border-left: 1px solid #a5a2a2;">
+						  <select class="form-control" >
+							<option value="1">男</option>
+							<option value="0">女</option>
+							
+						  </select>
+					  </div>
+                        <div class="clear" ></div>
+                    </div>
+                    <div class="btn btn-block" >
+                        <button type="submit" id="submit" style="height:50px;background-color: #2595f7;">注册</button>
+                    </div>
+                </form>
+                <div class="w3layouts_more-buttn">
+                    <h3>
+                        <a href="login.html">立即登录
+                        </a>
+                    </h3>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+	 <script src="layer/layer.js"></script>
+    <script>
+  		$("#submit").click(function(){
+  	
+  			if(!($("#username").val()!=""&&$("#username").val()!=null&&$("#password").val()!=""&&$("#password").val()!=null&&$("#repassword").val()!=""&&$("#repassword").val()!=null&&$("#user_phone").val()!=""&&$("#user_phone").val()!=null)){
+				layer.msg('所有信息必须填哦！！！', {time:2000,icon: 5,shift:6});
+				return false;
+			}
+			var username=$("#username").val();
+			var userPattern=/^[a-zA-Z0-9\u4E00-\u9FA5]{2,10}$/;
+			if(!userPattern.test(username)){
+				layer.msg('姓名格式不对哦^-^ 要2-10位中文,数字,大小写字母组合', {time:2000,icon: 5,shift:6});
+				return false;
+			}
+			var password=$("#password").val();
+			var repassword=$("#repassword").val();
+			if(password!=repassword){
+				layer.msg('两次密码输入不相等', {time:2000,icon: 5,shift:6});
+				return false;
+			}
+			var passwordPattern=/^[A-z][A-z0-9]{6,16}$/;
+			if(!passwordPattern.test(password)){
+				layer.msg('密码格式不正确，需要6-16位字母数字组成并且由字母开头', {time:2000,icon: 5,shift:6});
+				return false;
+			}
+  			var reg=/1[0-9]{10}$/;
+			if(!reg.test($("#user_phone").val())){
+				layer.msg('手机号码格式不对哦 要11位数字以1开头', {time:2000,icon: 5,shift:6});
+				return false;
+			} 
+			 
+  			 $.ajax({
+					type:"POST",
+					url:"RegisterUser",
+					data:{
+						"username":$("#username").val(),
+						"password":$("#password").val(),
+						"user_phone":$("#user_phone").val()
+					},
+					beforeSend:function(){
+						index = layer.msg("处理中",{icon:16}); //换了种风格
+					},
+					success:function(result){
+						if(result=="true"){
+							layer.msg('注册成功', {time:2000,icon: 2,shift:6});
+							window.location.href="login.html"
+						}else if(result=="false"){
+							layer.msg('注册失败', {time:2000,icon: 5,shift:6});
+						}else{
+							layer.msg('用户名已存在', {time:2000,icon: 5,shift:6});
+						}
+					}
+			})
+			return false;
+  		})
+	   
+	</script>
+	<!---728x90--->
+    <footer style="text-align: center;width: 100%;position: fixed;bottom: 0px;">
+        <p style="color: #FFF;">
+            © 2019 啵啵网上学科竞赛管理信息系统
+      
+        </p>
+    </footer>
+</body>
+
+</html>

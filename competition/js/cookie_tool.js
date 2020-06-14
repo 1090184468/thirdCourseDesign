@@ -36,7 +36,7 @@ $("#modifyPasswordLayer").load("modifyPasswordLayer.html",function(){
 function showModifyLayer() {
     let index = layer.open({
         type: 1,
-        btn: ['取消','确定'],
+        btn: ['确定','取消'],
         title: "修改密码",
         area: ["660px", "320px"],
         content: $("#modifypwdlayer"),
@@ -47,40 +47,41 @@ function showModifyLayer() {
                     deleteFile(index);
                 }
             })
-			 $("#mopwd").val($.cookie("password"))
+			$("#mopwd").val($.cookie("password"))
             getModifyPwd()
         },
         cancel: function(index, layero){
-            $("#mopwd").val("")
-            $("#mopwd-aux").css("display", "none")
-            $("#newpwd1").val("")
-            $("#newpwd1-aux").css("display", "none")
-            $("#newpwd2").val("")
-            $("#newpwd2-aux").css("display", "none")
+            setEmpty();
 			
         },
         yes: function (index) {
-			$("#mopwd").val("")
-			$("#mopwd-aux").css("display", "none")
-			$("#newpwd1").val("")
-			$("#newpwd1-aux").css("display", "none")
-			$("#newpwd2").val("")
-			$("#newpwd2-aux").css("display", "none")
-            layer.close(index);
+			
+			if(lockMo==1||lockNew1==1||lockNew2==1){
+				layer.msg('输入密码格式不正确', {time:2000,icon: 5,shift:6});
+				return ;
+			}
+            confirmModifyPwd(index);
+            return false;
+            
         },btn2: function (index) {
-			$("#mopwd").val("")
-			$("#mopwd-aux").css("display", "none")
-			$("#newpwd1").val("")
-			$("#newpwd1-aux").css("display", "none")
-			$("#newpwd2").val("")
-			$("#newpwd2-aux").css("display", "none")
-            confirmModifyPwd(index)
-            return false
+			setEmpty();
+			layer.close(index);
         }
     });
 }
+var lockMo=1;
+var lockNew1=1;
+var lockNew2=1;
+function setEmpty(){
+	$("#mopwd").val("")
+			$("#mopwd-aux").css("display", "none")
+			$("#newpwd1").val("")
+			$("#newpwd1-aux").css("display", "none")
+			$("#newpwd2").val("")
+			$("#newpwd2-aux").css("display", "none")
+}
 function getModifyPwd() {
-    var pwd
+    var pwd;
     $("#mopwd").blur(function () {
         let mopwd = $("#mopwd").val().trim();
         if (mopwd.length == 0) {
@@ -88,38 +89,51 @@ function getModifyPwd() {
                 display: "block",
                 color: "#ff1010",
             }).html("请输入原密码")
+			lockMo=1;
         } else {
             //发送ajax获得原密码 pwd
-            pwd = 1
+            pwd = 1;
  
             if (mopwd != pwd) {
                 $("#mopwd-aux").css({
                     display: "block",
                     color: "#ff1010",
                 }).html("密码不正确")
+				lockMo=1;
             } else {
                 $("#mopwd-aux").css({
                     display: "block",
                     color: "#5FB878"
                 }).html("输入正确")
+				lockMo=0;
             }
         }
     })
- 
+	var passwordPattern=/^[A-z][A-z0-9]{5,16}$/;
     var newpwd1 = $("#newpwd1").val().trim()
     $("#newpwd1").blur( function () {
-        newpwd1 = $("#newpwd1").val().trim()
+        newpwd1 = $("#newpwd1").val().trim();
+		
         if (newpwd1.length == 0) {
             $("#newpwd1-aux").css({
                 display: "block",
                 color: "#ff1010"
             }).html("请输入新密码")
-        } else {
+			lockNew1=1;
+        } else if(!passwordPattern.test(newpwd1)){
+			$("#newpwd1-aux").css({
+			    display: "block",
+			    color: "#ff1010"
+			}).html("密码格式不正确，需要6-16位字母数字组成并且由字母开头")
+			lockNew1=1;
+		} else {
             $("#newpwd1-aux").css({
                 display: "block",
                 color: "#5FB878"
             }).html("输入正确")
+			lockNew1=0;
         }
+		
     })
  
     $("#newpwd2").focus(()=> {
@@ -129,6 +143,7 @@ function getModifyPwd() {
                 display: "block",
                 color: "#ff1010"
             }).html("请输入新密码")
+			lockNew2=1
         }
     })
  
@@ -138,27 +153,34 @@ function getModifyPwd() {
             $("#newpwd2-aux").css({
                 display: "block",
                 color: "#ff1010"
-            }).html("请输入新密码")
+            }).html("请输入新密码");
+			lockNew2=1;
         } else if (newpwd1 != newpwd2) {
             $("#newpwd2-aux").css({
                 display: "block",
                 color: "#ff1010"
-            }).html("两次输入不一致")
-            $("#newpwd1-aux").css({
-                display: "block",
-                color: "#ff1010"
-            }).html("两次输入不一致")
+            }).html("两次输入不一致");
+			lockNew2=1;
+            
  
         } else if (newpwd1 == newpwd2 && newpwd1 == pwd) {
             $("#newpwd2-aux").css({
                 display: "block",
                 color: "#ff1010"
-            }).html("新密码不能与原密码相同")
+            }).html("新密码不能与原密码相同");
+			lockNew2=1;
             $("#newpwd1-aux").css({
                 display: "block",
                 color: "#ff1010"
-            }).html("新密码不能与原密码相同")
-        } else {
+            }).html("新密码不能与原密码相同");
+			lockNew2=1;
+        } else if(!passwordPattern.test(newpwd1)){
+			$("#newpwd1-aux").css({
+			    display: "block",
+			    color: "#ff1010"
+			}).html("密码格式不正确，需要6-16位字母数字组成并且由字母开头")
+			lockNew1=1;
+		}else {
             $("#newpwd1-aux").css({
                 display: "block",
                 color: "#5FB878"
@@ -167,7 +189,9 @@ function getModifyPwd() {
                 display: "block",
                 color: "#5FB878"
             }).html("输入正确")
-            $("#adduserlayer").data("new_pwd", newpwd1)
+            $("#adduserlayer").data("new_pwd", newpwd1);
+			lockNew1=0;
+			lockNew2=0;
         }
     });
 }

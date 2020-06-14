@@ -114,7 +114,7 @@
 				layer.msg('两次密码输入不相等', {time:2000,icon: 5,shift:6});
 				return false;
 			}
-			var passwordPattern=/^[A-z][A-z0-9]{6,16}$/;
+			var passwordPattern=/^[A-z][A-z0-9]{5,16}$/;
 			if(!passwordPattern.test(password)){
 				layer.msg('密码格式不正确，需要6-16位字母数字组成并且由字母开头', {time:2000,icon: 5,shift:6});
 				return false;

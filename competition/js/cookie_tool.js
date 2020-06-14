@@ -16,4 +16,7 @@ $(".Header").load("header.html",function(){
 	document.getElementById("backToIndex").onmouseover = function() {
 		this.style.cursor = "pointer";
 	}
+	$("#exit").click(function() {
+		exit();
+	})
 })

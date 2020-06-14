@@ -4,11 +4,7 @@ function exit(){
 	$.removeCookie("TOKEN");
 	window.location.href="login.html"
 }
-$(".Left").load("left.html",function(){
-	if($.cookie("type")==0||$.cookie("type")==null){
-		$(".notauthority").remove(); 
-	} 
-});
+
 $(".Header").load("header.html",function(){
 	document.getElementById("backToIndex").onclick = function() {
 		window.location.href = "index.html";
@@ -19,7 +15,19 @@ $(".Header").load("header.html",function(){
 	$("#exit").click(function() {
 		exit();
 	})
-	
+	$(".Left").load("left.html",function(){
+		if($.cookie("type")==0||$.cookie("type")==null){
+			$(".notauthority").remove(); 
+		} 
+		layui.use('element', function(){
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  //监听导航点击
+		  element.on('nav(demo)', function(elem){
+		    //console.log(elem)
+		    //layer.msg(elem.text());
+		  });
+		});
+	});
 })
 
 $("#modifyPasswordLayer").load("modifyPasswordLayer.html",function(){

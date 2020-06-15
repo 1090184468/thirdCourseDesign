@@ -47,7 +47,6 @@ function showModifyLayer() {
                     deleteFile(index);
                 }
             })
-			$("#mopwd").val($.cookie("password"))
             getModifyPwd()
         },
         cancel: function(index, layero){

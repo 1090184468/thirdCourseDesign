@@ -15,6 +15,7 @@ $(".Header").load("header.html",function(){
 	$("#exit").click(function() {
 		exit();
 	})
+	$("#loginUsername").html($.cookie("username"))
 	$(".Left").load("left.html",function(){
 		if($.cookie("type")==0||$.cookie("type")==null){
 			$(".notauthority").remove(); 

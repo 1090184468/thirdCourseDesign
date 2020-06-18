@@ -104,22 +104,23 @@
 			
 			var index=0;
 			$.ajax({
-				type:"POST",
-				url:"DoLogin",
+				type:"Get",
+				url:"http://localhost:8080/Curriculum/User/checkUser"+"/"+username,
 				data:{
-					"username":username,
-					"password":password
+					/* "username":username,*/
+					"password":password 
 				},
 				beforeSend:function(){
 					index = layer.msg("处理中",{icon:16}); //换了种风格
 				},
 				success:function(result){
 					layer.close(index);  
+					result=JSON.parse(result)
 					if(result.code=="200"){
-						$.cookie("username",result.user.username);
-						$.cookie("password",result.user.password);
-						$.cookie("TOKEN",result.user.token);
-						$.cookie("type",result.user.type);
+						$.cookie("username",username);
+						$.cookie("password",password);
+						$.cookie("TOKEN",result.data);
+						$.cookie("type",result.type);
 						window.location.href='index.html';
 					}else{
 						layer.msg('用户名或密码错误', {time:1000,icon: 2,shift:6});

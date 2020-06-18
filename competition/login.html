@@ -110,12 +110,12 @@
 					/* "username":username,*/
 					"password":password 
 				},
+				dataType: "json",
 				beforeSend:function(){
 					index = layer.msg("处理中",{icon:16}); //换了种风格
 				},
 				success:function(result){
 					layer.close(index);  
-					result=JSON.parse(result)
 					if(result.code=="200"){
 						$.cookie("username",username);
 						$.cookie("password",password);

@@ -90,17 +90,14 @@
 			$("#username").val("");
 			$("#password").val("");
 		}
-		function doLogin(){
-			
+		function doLogin(){			
 			var username=$("#username").val();
 			if(username==""){
-
 				layer.msg('用户名不能为空', {time:2000,icon: 5,shift:6});
 				return;
 			}
 			var password=$("#password").val();
 			if(password==""){
-
 				layer.msg('密码不能为空', {time:2000,icon: 5,shift:6});
 				return;
 			}
@@ -123,7 +120,7 @@
 						$.cookie("password",result.user.password);
 						$.cookie("TOKEN",result.user.token);
 						$.cookie("type",result.user.type);
-						window.location.href='Index';
+						window.location.href='index.html';
 					}else{
 						layer.msg('用户名或密码错误', {time:1000,icon: 2,shift:6});
 					}

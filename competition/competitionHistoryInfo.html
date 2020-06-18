@@ -64,8 +64,9 @@
 					table.render({
 						elem: '#competitionInfo',
 						id: 'Reload',
-						page: true //开启分页
-							,
+						page: true ,//开启分页
+						url:'127.0.0.1:8080/Curriculum/Competition/allCompetition',
+						headers:{'TOKEN':$.cookie("TOKEN")},
 						text: {
 							none: '没有竞赛信息'
 						},

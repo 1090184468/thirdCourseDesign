@@ -51,7 +51,12 @@
 
                         <div class="clear" ></div>
                     </div>
-                
+					<div class="form-left-to-w3l">
+					    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+					    <input type="text"  id="email"  name="email" placeholder="你的邮箱" required>
+					
+					    <div class="clear" ></div>
+					</div>
                     <div class="form-left-to-w3l ">
 
                         <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
@@ -92,7 +97,7 @@
     <script>
   		$("#submit").click(function(){
   	
-  			if(!($("#username").val()!=""&&$("#username").val()!=null&&$("#password").val()!=""&&$("#password").val()!=null&&$("#repassword").val()!=""&&$("#repassword").val()!=null&&$("#user_phone").val()!=""&&$("#user_phone").val()!=null)){
+  			if(!($("#email").val()!=""&&$("#email").val()!=null&&$("#username").val()!=""&&$("#username").val()!=null&&$("#password").val()!=""&&$("#password").val()!=null&&$("#repassword").val()!=""&&$("#repassword").val()!=null&&$("#user_phone").val()!=""&&$("#user_phone").val()!=null)){
 				layer.msg('所有信息必须填哦！！！', {time:2000,icon: 5,shift:6});
 				return false;
 			}
@@ -100,6 +105,12 @@
 			var userPattern=/^[a-zA-Z0-9\u4E00-\u9FA5]{2,10}$/;
 			if(!userPattern.test(username)){
 				layer.msg('姓名格式不对哦^-^ 要2-10位中文,数字,大小写字母组合', {time:2000,icon: 5,shift:6});
+				return false;
+			}
+			var email=$("#email").val();
+			var emailPattern=/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+			if(!emailPattern.test(email)){
+				layer.msg('邮箱格式不正确', {time:2000,icon: 5,shift:6});
 				return false;
 			}
 			var password=$("#password").val();
@@ -120,13 +131,14 @@
 			} 
 			 
   			 $.ajax({
-					type:"POST",
+					type:"GET",
 					url:"RegisterUser",
 					dataType: "json",
 					data:{
 						"username":$("#username").val(),
 						"password":$("#password").val(),
-						"user_phone":$("#user_phone").val()
+						"user_phone":$("#user_phone").val(),
+						"eamil":$("#email").val()
 					},
 					beforeSend:function(){
 						index = layer.msg("处理中",{icon:16}); //换了种风格

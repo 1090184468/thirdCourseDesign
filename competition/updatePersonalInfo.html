@@ -82,12 +82,12 @@
 					laydate.render({
 						elem: '#birthdate'
 					});
-					
+					//请求用户的信息
 					$.ajax({
 						type: "Get",
-						url: "http://localhost:8080/Curriculum/User/updateUser"+"/"+$("#username").val()+
+						url: "http://localhost:8080/Curriculum/User/allUser/"+$.cookie("userid")/* +$("#username").val()+
 					"?user_phone="+$("#phone").val()+"&username="+$("#username").val()+"&sex="+$("#sex").val()+"&email="+$("#email").val()+
-					"?cotent="+$("#personalProfile").val() ,
+					"?cotent="+$("#personalProfile").val() */,
 						headers:{'TOKEN':$.cookie("TOKEN")},
 						dataType: "json",
 						beforeSend: function() {
@@ -96,8 +96,7 @@
 							});
 						},
 						success: function(result) {
-							layer.close(index);
-							var resultBean = JSON.parse(result);
+							console.log(result)
 						}
 					})
 					$("#updatePassword").click(function() {

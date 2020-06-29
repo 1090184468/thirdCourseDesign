@@ -231,9 +231,11 @@
 							},
 							success: function(result) {
 								layer.close(index);
-								window.location.href="publishCompetitionInfo.html";
-								var resultBean = JSON.parse(result);
-								console.log(result);
+								layer.msg('发布竞赛成功!!!', {time:1000,icon: 1,shift:6});
+								setTimeout(function(){
+									window.location.reload();
+								},900)
+								
 							}
 						})
 						return false;

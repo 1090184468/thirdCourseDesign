@@ -63,11 +63,16 @@
 					//第一个实例
 					table.render({
 						elem: '#competitionInfo',
+						url:'http://127.0.0.1:8080/Curriculum/Competition/UserCompetition/'+$.cookie("username"),
+						request: {
+							pageName: 'page' //页码的参数名称，默认：page
+							,limitName: 'pagesize' //每页数据量的参数名，默认：limit
+						},
+						headers:{'TOKEN':$.cookie("TOKEN")},
 						id: 'Reload',
 						page: true ,//开启分页
 						width:1680,
-						url:'127.0.0.1:8080/Curriculum/Competition/allCompetition',
-						headers:{'TOKEN':$.cookie("TOKEN")},
+						
 						text: {
 							none: '没有竞赛信息'
 						},
@@ -98,35 +103,11 @@
 										return d.duration;
 								}}
 							]
-						],
-						data: [{
-							'competitionId':'5',
-							'competitionName': '广西民族大学大赛',
-							'competitionImg': 'images/1.jpg',
-							'enrollStartTime': '2020-6-4 21:10:00',
-							'enrollEndTime': '2020-6-5 21:10:00',
-							'startCompetition': '2020-6-4 21:10:00',
-							'endCompetition':'2020-6-5 21:10:00',
-							'type': 1,
-							'num':200,
-							'teamNum':5,
-							'duration':'5小时',
-							'isEnrolled':1
-						},{
-							'competitionId':'6',
-							'competitionName': '广西民族大学大赛',
-							'competitionImg': 'images/1.jpg',
-							'enrollStartTime': '2020-6-4 21:10:00',
-							'enrollEndTime': '2020-6-8 21:10:00',
-							'startCompetition': '2020-6-4 21:10:00',
-							'endCompetition':'2020-6-5 21:10:00',
-							'type': 0,
-							'num':200,
-							'teamNum':1,
-							'duration':'5小时',
-							'isEnrolled':1
+						],done: function(res){
+							console.log(res);
+							console.log($.cookie("username"));
 						}
-						]
+						
 					});
 				$(".myTeam").click(function(){
 					console.log($(this).attr('isEnrolled'))

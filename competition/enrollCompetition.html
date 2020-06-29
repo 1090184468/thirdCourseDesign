@@ -32,16 +32,17 @@
 			<div class="Left"></div>
 			<!-- 主体显示内容 -->
 			<div class="layui-body" style="display: block;justify-content: center;align-items: center;padding: 20px;">
-				<div class="demoTable" style="margin-bottom: 5px;">
-				  搜索竞赛名：
-				  <div class="layui-inline">
-				    <input class="layui-input" name="competitionName" id="competitionName" autocomplete="off">
-				  </div>
-				  <button class="layui-btn" data-type="reload">搜索</button>
-				</div>
-				<table id="competitionInfo" lay-filter="competitionInfo" style="">
-
-				</table>
+					<div class="demoTable" style="margin-bottom: 5px;">
+					  搜索竞赛名：
+					  <div class="layui-inline">
+						<input class="layui-input" name="competitionName" id="competitionName" autocomplete="off">
+					  </div>
+					  <button class="layui-btn" data-type="reload">搜索</button>
+					</div>
+					<table id="competitionInfo" lay-filter="competitionInfo" style="">
+						
+					</table>
+					
 			</div>
 			<div id="modifyPasswordLayer"></div>
 			<script type="text/html" id="imgtemp">
@@ -105,14 +106,20 @@
 					//第一个实例
 					table.render({
 						elem: '#competitionInfo',
+						url:"http://localhost:8080/Curriculum/Competition/allCompetition",
+						request: {
+							pageName: 'page' //页码的参数名称，默认：page
+							,limitName: 'pagesize' //每页数据量的参数名，默认：limit
+						},
+						headers:{'TOKEN':$.cookie("TOKEN")},
 						id: 'Reload',
 						loading:true,
-						width:1680,
+						width:1680, 
 						page: true ,//开启分页
 						text: {
 							none: '当前没有可报名的竞赛信息'
 						},
-						cols: [
+						cols:[
 							[ //表头
 							  {field: 'competitionImg',title: '竞赛图片',width:200,unresize:true,align: 'center',templet: '#imgtemp'}
 							, {field: 'competitionName',title: '竞赛名',unresize:true,align: 'center'}
@@ -150,46 +157,67 @@
 							, {field: 'duration',title: '竞赛时长',unresize:true,align: 'center',templet: function(d) {
 										return d.duration;
 								}}
-							,{fixed: 'right',align: 'center',title: '操作',toolbar: '#enroll'}
-							]
-						],
-						data: [{
-							'competitionId':'5',
-							'competitionName': '广西民族大学大赛',
-							'competitionImg': 'images/1.jpg',
-							'enrollStartTime': '2020-6-4 21:10:00',
-							'enrollEndTime': '2020-6-5 21:10:00',
-							'startCompetition': '2020-06-15 21:50:00',
-							'endCompetition':'2020-6-17 21:10:00',
-							'type': 1,
-							'num':200,
-							'teamNum':5,
-							'duration':'5小时',
-							'isEnrolled':0
-						},{
-							'competitionId':'6',
-							'competitionName': '广西民族大学大赛',
-							'competitionImg': 'images/1.jpg',
-							'enrollStartTime': '2020-6-4 21:10:00',
-							'enrollEndTime': '2020-6-8 21:10:00',
-							'startCompetition': '2020-6-18 21:31:00',
-							'endCompetition':'2020-6-19 21:10:00',
-							'type': 0,
-							'num':200,
-							'teamNum':1,
-							'duration':'5小时',
-							'isEnrolled':1
+							,{fixed: 'right',align: 'center',unresize:true,title: '操作',toolbar: '#enroll'}
+							]],done: function(res){
+							//点击我的团队显示队伍信息
+							$(".myTeam").click(function(){
+								var competitonId =this.id.substr(4);
+								//请求当前队伍信息
+								
+								console.log($(this).attr('isEnrolled'))
+								if($(this).attr('isEnrolled')=='1'){
+$.ajax({
+									type: "GET",
+									url: 'http://localhost:8080/Curriculum/Enlist/getTeam/'+$.cookie("username")+
+										 '?competitionId='+this.id.substr(4),
+									headers:{'TOKEN':$.cookie("TOKEN")},
+									dataType: "json",
+									data: {},
+									beforeSend: function() {
+										index = layer.msg('加载中。。', {
+											icon: 16
+										});
+									},
+									success: function(result) {
+										console.log(result);	
+										var resultUI =  '<div style="text-align:center;font-size:20px">我的团队\
+																	</div><div style="padding: 50px; line-height: 22px; background-color: #393D49;\
+																	color: #fff; font-weight: 300;">团队ID:'+
+																	competitonId+
+																	'<br>\
+																	团队队长:'+result.data.userid+'<br>';
+																	
+										for(j = 0; j < result.data.teamusers.length; j++) {	
+											var x = j+1;
+											resultUI=resultUI+'团队队员'+x+':'+result.data.teamusers[j]+'<br>';
+										}
+										resultUI=resultUI+'</div>';							
+										layer.open({
+											type: 1
+											,title: false //不显示标题栏
+											,closeBtn: false
+											,area: '400px;'
+											,shade: 0.8
+											,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+											,btn: ['关闭']
+											,btnAlign: 'c'
+											,moveType: 1 //拖拽模式，0或者1
+											,content: resultUI
+											,btn1:function(){
+												layer.closeAll()
+											}
+										});
+									}
+								})
+									// alert(this.id.substr(4));
+								}else{
+									layer.msg('你还没有团队哦!快去申请或加入吧', {time:1000,icon: 5,shift:6});
+								}
+							})
+							console.log(res);
 						}
-						]
 					});
-					$(".myTeam").click(function(){
-						console.log($(this).attr('isEnrolled'))
-						if($(this).attr('isEnrolled')=='1'){
-							alert(this.id.substr(4));
-						}else{
-							layer.msg('你还没有团队哦!快去申请或加入吧', {time:1000,icon: 5,shift:6});
-						}
-					})
+					
 					$("#updatePassword").click(function() {
 									showModifyLayer();
 									This=this;
@@ -199,13 +227,36 @@
 					})
 					table.on('tool(competitionInfo)', function(obj) {
 						var data = obj.data;
-						alert(data.competitionId);
+						
 						if (obj.event == 'enroll') {
 							if(data.isEnrolled=='1'){
 								return false;
 							}
+							//个人报名
 							if (data.type == "0") {
-
+								$.ajax({
+									type: "GET",
+									url: 'http://localhost:8080/Curriculum/Enlist/addEnlist/'+$.cookie("username")+
+										 '?type=0&competitionId='+data.competitionId+'&teamname='+'个人',
+									headers:{'TOKEN':$.cookie("TOKEN")},
+									dataType: "json",
+									data: {},
+									beforeSend: function() {
+										index = layer.msg('加载中。。', {
+											icon: 16
+										});
+									},
+									success: function(result) {
+										layer.close(index);
+										
+										//提示模板
+										layer.msg('个人赛报名成功!!!', {time:1000,icon: 1,shift:6});
+										setTimeout(function(){
+											window.location.reload();
+										},900)
+										
+									}
+								})
 							} else if (data.type == "1") {
 								layer.open({
 									type: 1,
@@ -217,6 +268,25 @@
 									btn1: function(index, layero) {
 										var kk = $("#teamId").val();
 										alert(kk);
+										$.ajax({
+											type: "GET",
+											url: 'http://localhost:8080/Curriculum/Enlist/joinEnlist/'+kk
+											+'?userid='+$.cookie("username"),
+											headers:{'TOKEN':$.cookie("TOKEN")},
+											dataType: "json",
+											data: {},
+											beforeSend: function() {
+												index = layer.msg('加载中。。', {
+													icon: 16
+												});
+											},
+											success: function(result) {
+												layer.close(index);
+												console.log(result);
+												alert("加入成功");
+												
+											}
+										})
 									},
 									btn2: function(index, layero) {
 										layer.closeAll();
@@ -234,7 +304,26 @@
 													layer.msg('队伍名格式不对哦^-^ 要2-10位中文,数字,大小写字母组合', {time:1000,icon: 5,shift:6});
 													return false;
 												}
-												
+												layer.close(index);
+												$.ajax({
+													type: "GET",
+													url: 'http://localhost:8080/Curriculum/Enlist/addEnlist/'+$.cookie("username")+
+														 '?type=1&competitionId='+data.competitionId+'&teamname='+$("#teamName").val(),
+													headers:{'TOKEN':$.cookie("TOKEN")},
+													dataType: "json",
+													data: {},
+													beforeSend: function() {
+														index = layer.msg('加载中。。', {
+															icon: 16
+														});
+													},
+													success: function(result) {
+														layer.close(index);
+														console.log(result);
+														alert("加入成功");
+														
+													}
+												})
 											},
 											btn2: function(index, layero) {
 												layer.closeAll();
@@ -253,6 +342,8 @@
 
 								});
 							}
+						}else{
+							
 						}
 					});
 
@@ -279,10 +370,12 @@
 					          curr: 1 //重新从第 1 页开始
 					        }
 					        ,where: {
+								
 					            competitionName: competitionName.val(),
 								
 					        }
 					      });
+						  console.log(competitionName.val());
 					    }
 					  };
 					  

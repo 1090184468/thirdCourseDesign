@@ -150,6 +150,12 @@
 					//第一个实例
 					table.render({
 						elem: '#competitionInfo',
+						url:'http://127.0.0.1:8080/Curriculum/Competition/UserCompetition/'+$.cookie("username"),
+						request: {
+							pageName: 'page' //页码的参数名称，默认：page
+							,limitName: 'pagesize' //每页数据量的参数名，默认：limit
+						},
+						headers:{'TOKEN':$.cookie("TOKEN")},
 						id: 'Reload',
 						loading:true,	
 						page: true ,//开启分页
@@ -196,35 +202,10 @@
 								}}
 							,{fixed: 'right',align: 'center',title: '操作',toolbar: '#manage'}
 							]
-						],
-						data: [{
-							'competitionId':'5',
-							'competitionName': '广西民族大学大赛',
-							'competitionImg': 'images/1.jpg',
-							'enrollStartTime': '2020-6-4 21:10:00',
-							'enrollEndTime': '2020-6-5 21:10:00',
-							'startCompetition': '2020-6-8 21:50:00',
-							'endCompetition':'2020-6-9 21:10:00',
-							'type': 1,
-							'num':200,
-							'teamNum':5,
-							'duration':'5小时',
-							'profile':'广西民族大学程序竞赛开赛了'
-						},{
-							'competitionId':'6',
-							'competitionName': '广西民族大学大赛',
-							'competitionImg': 'images/1.jpg',
-							'enrollStartTime': '2020-6-4 21:10:00',
-							'enrollEndTime': '2020-6-8 21:10:00',
-							'startCompetition': '2020-6-8 21:10:00',
-							'endCompetition':'2020-6-9 21:10:00',
-							'type': 0,
-							'num':200,
-							'teamNum':1,
-							'duration':'5小时',
-							'profile':'广西民族大学程序竞赛开赛了'
+						],done: function(res){
+							console.log($.cookie("username"));
+							console.log(res);
 						}
-						]
 					});
 					
 					//日期
@@ -265,6 +246,7 @@
 									shade: 0.3,
 									btn: ['提交', '取消'],
 									btn1: function(index, layero) {
+										console.log(data.competitionId);
 										if( $('#competitionName').val()==''||$('#enrollCompetitionStartTime').val()==''||
 											$('#enrollCompetitionEndTime').val()==''||$('#competitionStartTime').val()==''||
 											$('#competitionEndTime').val()==''){
@@ -276,6 +258,28 @@
 											layer.msg('竞赛名格式不对哦^-^ 要4-20位中文,数字,大小写字母组合', {time:1000,icon: 2,shift:6});
 											return false;
 										}
+										$.ajax({
+											type: "GET",
+											url: 'http://localhost:8080/Curriculum/Competition/updateCompetition/'+data.competitionId+'?'
+											+'competitionName='+$("#competitionName").val()+'&startCompetition='+$("#competitionStartTime").val()
+											+'&endCompetition='+$("#competitionEndTime").val()+'&enrollStartTime='+$("#enrollCompetitionStartTime").val()
+											+'&enrollEndTime='+$("#enrollCompetitionEndTime").val()+'&num='+$("#num").val()
+											+'&teamNum='+100+'&type='+$("#type").val(),
+											headers:{'TOKEN':$.cookie("TOKEN")},
+											dataType: "json",
+											contentType:"application/text;charset=utf-8",
+											beforeSend: function() {
+												index = layer.msg('加载中。。', {
+													icon: 16
+												});
+											},
+											success: function(result) {
+												layer.close(index);
+												window.location.href="publishCompetitionInfo.html";
+												var resultBean = JSON.parse(result);
+												console.log(result);
+											}
+										})
 										layer.closeAll();
 									},
 									btn2: function(index, layero) {
@@ -317,6 +321,24 @@
 									btn1: function(index, layero) {
 										var kk = data.competitionId;
 										alert(kk);
+										$.ajax({
+											type: "GET",
+											url: 'http://localhost:8080/Curriculum/Competition/delCompetition/'+data.competitionId,
+											headers:{'TOKEN':$.cookie("TOKEN")},
+											dataType: "json",
+											contentType:"application/text;charset=utf-8",
+											beforeSend: function() {
+												index = layer.msg('加载中。。', {
+													icon: 16
+												});
+											},
+											success: function(result) {
+												layer.close(index);
+												window.location.href="managePublishCompetitionInfo.html";
+												var resultBean = JSON.parse(result);
+												console.log(result);
+											}
+										})
 									},
 									btn2: function(index, layero) {
 										layer.closeAll();

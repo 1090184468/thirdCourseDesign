@@ -71,7 +71,7 @@
                     <div class="form-left-to-w3l">
                         <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
 					   <div style="padding-left: 14px;border-left: 1px solid #a5a2a2;">
-						  <select class="form-control" >
+						  <select id="sex"  class="form-control" >
 							<option value="1">男</option>
 							<option value="0">女</option>
 							
@@ -94,6 +94,7 @@
         </div>
     </div>
 	 <script src="layer/layer.js"></script>
+	 <script src="js/jquery.cookie.js"></script>
     <script>
   		$("#submit").click(function(){
   	
@@ -132,24 +133,30 @@
 			 
   			 $.ajax({
 					type:"GET",
-					url:"RegisterUser",
+					url:"http://localhost:8080/Curriculum/User/registerUser"+"/"+$("#user_phone").val()+
+					"?user_phone="+$("#user_phone").val()+"&username="+$("#username").val()+"&password="+$("#password").val()+"&sex="+$("#sex").val()+"&email="+$("#email").val(),
 					dataType: "json",
-					data:{
-						"username":$("#username").val(),
-						"password":$("#password").val(),
-						"user_phone":$("#user_phone").val(),
-						"eamil":$("#email").val()
-					},
 					beforeSend:function(){
 						index = layer.msg("处理中",{icon:16}); //换了种风格
 					},
 					success:function(result){
-						if(result=="true"){
+						var username=$("#user_phone").val();
+						console.log(result);
+						if(result.msg=="true"){
 							layer.msg('注册成功', {time:2000,icon: 2,shift:6});
-							window.location.href="login.html"
-						}else if(result=="false"){
+							$.cookie("username",username);
+							$.cookie("password",$("#password").val());
+							$.cookie("TOKEN",result.data);
+							$.cookie("type",result.type);
+							console.log("注册成功");
+							window.location.href='index.html';
+						}else if(result.msg=="false"){
+							console.log("用户名已存在");
 							layer.msg('注册失败', {time:2000,icon: 5,shift:6});
 						}else{
+							console.log(result.msg);
+							console.log(result.msg=="false");
+							console.log(result.msg=="true");
 							layer.msg('用户名已存在', {time:2000,icon: 5,shift:6});
 						}
 					}

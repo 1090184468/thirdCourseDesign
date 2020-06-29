@@ -49,13 +49,7 @@
 					    </div>
 					  </div>
 					
-					<div class="layui-form-item">
-						<label class="layui-form-label">出生日期：</label>
-						<div class="layui-input-inline">
-							<input id="birthdate" type="text" name="birthdate" id="birthdate" lay-verify="birthdate" placeholder="yyyy-MM-dd"
-							 autocomplete="off" class="layui-input">
-						</div>
-					</div>
+
 					<div class="layui-form-item">
 						<div class="layui-form-item layui-form-text">
 							<label class="layui-form-label" id="profile">个人简介：</label>
@@ -90,10 +84,12 @@
 					});
 					
 					$.ajax({
-						type: "POST",
-						url: "",
+						type: "Get",
+						url: "http://localhost:8080/Curriculum/User/updateUser"+"/"+$("#username").val()+
+					"?user_phone="+$("#phone").val()+"&username="+$("#username").val()+"&sex="+$("#sex").val()+"&email="+$("#email").val()+
+					"?cotent="+$("#personalProfile").val() ,
+						headers:{'TOKEN':$.cookie("TOKEN")},
 						dataType: "json",
-						data: {},
 						beforeSend: function() {
 							index = layer.msg('加载中。。', {
 								icon: 16

@@ -80,7 +80,7 @@
 			</div>
 			 <div id="modifyPasswordLayer"></div>
 			<script type="text/html" id="imgtemp">
-				<img  src="{{d.competitionImg}}" style="width:200px;height:150px">
+				<img  src="{{d.competitionImg}}" width="200" height="150">
 			</script>
 		
 			<script src="assets/js/jquery-1.11.1.min.js"></script>
@@ -100,6 +100,12 @@
 					//第一个实例
 					table.render({
 						elem: '#competitionInfo',
+						url:"http://localhost:8080/Curriculum/Competition/EnrollCompetition/"+$.cookie("username"),
+						request: {
+							pageName: 'page' //页码的参数名称，默认：page
+							,limitName: 'pagesize' //每页数据量的参数名，默认：limit
+						},
+						headers:{'TOKEN':$.cookie("TOKEN")},
 						id: 'Reload',
 						page: true ,//开启分页
 						width:1680,	
@@ -118,7 +124,7 @@
 								}}
 					
 							, {field: 'type',title: '竞赛类型',unresize:true,align: 'center',templet: function(d) {
-										return d.type == 1 ? "团队赛/<a id='team"+d.competitionId+"' isEnrolled='"+d.isEnrolled+"' class='myTeam' style='color:red;cursor:pointer'>我的团队</a>" : "个人赛"
+										return d.type == 1 ? "团队赛/<a id='team"+d.competitionId+"'  isEnrolled='"+d.isEnrolled+"' class='myTeam' style='color:red;cursor:pointer'>我的团队</a>" : "个人赛"
 								}}
 							, {field: 'teamNum',title: '人数限制/每队',unresize:true,align: 'center',templet: function(d) {
 										if(d.type==0){
@@ -133,37 +139,15 @@
 										return d.duration;
 								}}
 							]
-						],
-						data: [{
-							'competitionId':'5',
-							'competitionName': '广西民族大学大赛',
-							'competitionImg': 'images/1.jpg',
-							'enrollStartTime': '2020-6-4 21:10:00',
-							'enrollEndTime': '2020-6-5 21:10:00',
-							'startCompetition': '2020-6-4 21:10:00',
-							'endCompetition':'2020-6-5 21:10:00',
-							'type': 1,
-							'num':200,
-							'teamNum':5,
-							'duration':'5小时',
-							'isEnrolled':1
-						},{
-							'competitionId':'6',
-							'competitionName': '广西民族大学大赛',
-							'competitionImg': 'images/1.jpg',
-							'enrollStartTime': '2020-6-4 21:10:00',
-							'enrollEndTime': '2020-6-8 21:10:00',
-							'startCompetition': '2020-6-4 21:10:00',
-							'endCompetition':'2020-6-5 21:10:00',
-							'type': 0,
-							'num':200,
-							'teamNum':1,
-							'duration':'5小时',
-							'isEnrolled':1
+						],done: function(res){
+							console.log(res);
+							console.log($.cookie("username"));
 						}
-						]
+						
+						
 					});
 					$(".myTeam").click(function(){
+						alert(9999)
 						console.log($(this).attr('isEnrolled'))
 						if($(this).attr('isEnrolled')=='1'){
 							alert(this.id.substr(4));

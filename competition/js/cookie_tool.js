@@ -4,7 +4,13 @@ function exit(){
 	$.removeCookie("TOKEN");
 	window.location.href="login.html"
 }
-
+if($.cookie("TOKEN")==""||$.cookie("TOKEN")==null){
+	alert("你还未登录，点击确定跳转到登录页面")
+	window.location.href="login.html";
+}
+function deleteCookie(){
+	$.cookie("TOKEN","");
+}
 $(".Header").load("header.html",function(){
 	document.getElementById("backToIndex").onclick = function() {
 		window.location.href = "index.html";
@@ -92,7 +98,7 @@ function getModifyPwd() {
 			lockMo=1;
         } else {
             //发送ajax获得原密码 pwd
-            pwd = 1;
+            pwd = $.cookie("password");
  
             if (mopwd != pwd) {
                 $("#mopwd-aux").css({
@@ -198,7 +204,33 @@ function getModifyPwd() {
 function confirmModifyPwd(index) {
     let newpwd = $("#adduserlayer").data("new_pwd")
     //发送ajax
- 
+	$.ajax({
+		type:"Get",
+		url:""/*需要修改密码的url*/,
+		data:{
+			"password":newpwd
+		},
+		dataType: "json",
+		beforeSend:function(){
+			index = layer.msg("处理中",{icon:16}); //换了种风格
+		},
+		success:function(result){
+			layer.close(index);  
+			if(result.code=="200"){
+				$.cookie("username",username);
+				$.cookie("password",password);
+				$.cookie("TOKEN",result.data);
+				$.cookie("type",result.type);
+				layer.msg('修改成功', {time:1000,icon: 1,shift:6});
+				setTimeout(function(){
+					window.location.href='index.html';	
+				},500)
+				
+			}else{
+				layer.msg('用户名或密码错误', {time:1000,icon: 2,shift:6});
+			}
+		}
+	})
     $("#mopwd").val("")
     $("#mopwd-aux").css("display", "none")
     $("#newpwd1").val("")

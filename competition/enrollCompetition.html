@@ -116,7 +116,7 @@
 						headers:{'TOKEN':$.cookie("TOKEN")},
 						id: 'Reload',
 						loading:true,
-						height:400,
+						height:600,
 						page: true ,//开启分页
 						text: {
 							none: '当前没有可报名的竞赛信息'
@@ -132,7 +132,7 @@
 										return d.enrollStartTime+"<br>至 "+d.endCompetition;
 								}}
 							, {field: 'countdown',title: '倒计时',unresize:true,width:200,align: 'center',templet: function(d) {
-										var time=d.startCompetition.split(" ");
+										var time=d.enrollEndTime.split(" ");
 										yyyy=time[0].split("-")[0];
 										MM=time[0].split("-")[1];
 										dd=time[0].split("-")[2];
@@ -161,6 +161,7 @@
 								}}
 							,{fixed: 'right',align: 'center',unresize:true,title: '操作',toolbar: '#enroll'}
 							]],done: function(res){
+								console.log(res)
 							//点击我的团队显示队伍信息
 							$(".myTeam").click(function(){
 								var competitonId =this.id.substr(4);
@@ -170,7 +171,7 @@
 								if($(this).attr('isEnrolled')=='1'){
 								$.ajax({
 									type: "GET",
-									url: 'http://localhost:8080/Curriculum/Enlist/getTeam/'+$.cookie("username")+
+									url: 'http://localhost:8080/Curriculum/Enlist/getTeam/'+$.cookie("userid")+
 										 '?competitionId='+this.id.substr(4),
 									headers:{'TOKEN':$.cookie("TOKEN")},
 									dataType: "json",
@@ -238,7 +239,7 @@
 							if (data.type == "0") {
 								$.ajax({
 									type: "GET",
-									url: 'http://localhost:8080/Curriculum/Enlist/addEnlist/'+$.cookie("username")+
+									url: 'http://localhost:8080/Curriculum/Enlist/addEnlist/'+$.cookie("userid")+
 										 '?type=0&competitionId='+data.competitionId+'&teamname='+'个人',
 									headers:{'TOKEN':$.cookie("TOKEN")},
 									dataType: "json",
@@ -273,7 +274,7 @@
 										$.ajax({
 											type: "GET",
 											url: 'http://localhost:8080/Curriculum/Enlist/joinEnlist/'+kk
-											+'?userid='+$.cookie("username"),
+											+'?userid='+$.cookie("userid"),
 											headers:{'TOKEN':$.cookie("TOKEN")},
 											dataType: "json",
 											data: {},
@@ -309,7 +310,7 @@
 												layer.close(index);
 												$.ajax({
 													type: "GET",
-													url: 'http://localhost:8080/Curriculum/Enlist/addEnlist/'+$.cookie("username")+
+													url: 'http://localhost:8080/Curriculum/Enlist/addEnlist/'+$.cookie("userid")+
 														 '?type=1&competitionId='+data.competitionId+'&teamname='+$("#teamName").val(),
 													headers:{'TOKEN':$.cookie("TOKEN")},
 													dataType: "json",

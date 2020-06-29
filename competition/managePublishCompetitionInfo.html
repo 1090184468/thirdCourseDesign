@@ -152,7 +152,7 @@
 					//第一个实例
 					table.render({
 						elem: '#competitionInfo',
-						url:'http://127.0.0.1:8080/Curriculum/Competition/UserCompetition/'+$.cookie("username"),
+						url:'http://127.0.0.1:8080/Curriculum/Competition/UserCompetition/'+$.cookie("userid"),
 						request: {
 							pageName: 'page' //页码的参数名称，默认：page
 							,limitName: 'pagesize' //每页数据量的参数名，默认：limit
@@ -161,7 +161,7 @@
 						id: 'Reload',
 						loading:true,	
 						page: true ,//开启分页
-						height:400,		
+						height:600,		
 						text: {
 							none: '没有竞赛信息'
 						},

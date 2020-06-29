@@ -149,7 +149,7 @@
 					
 					// $.ajax({
 					// 	type: "GET",
-					// 	url: 'http://localhost:8080/Curriculum/Competition/addCompetition/'+$.cookie("username"),
+					// 	url: 'http://localhost:8080/Curriculum/Competition/addCompetition/'+$.cookie("userid"),
 					// 	headers:{'TOKEN':$.cookie("TOKEN")},
 					// 	dataType: "json",
 					// 	data: {},
@@ -216,7 +216,7 @@
 						})
 						$.ajax({
 							type: "GET",
-							url: 'http://localhost:8080/Curriculum/Competition/addCompetition/'+$.cookie("username")+'?'
+							url: 'http://localhost:8080/Curriculum/Competition/addCompetition/'+$.cookie("id")+'?'
 							+'competitionName='+$("#competitionName").val()+'&startCompetition='+$("#competitionStartTime").val()
 							+'&endCompetition='+$("#competitionEndTime").val()+'&enrollStartTime='+$("#enrollCompetitionStartTime").val()
 							+'&enrollEndTime='+$("#enrollCompetitionEndTime").val()+'&num='+$("#num").val()

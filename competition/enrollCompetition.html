@@ -114,7 +114,7 @@
 						headers:{'TOKEN':$.cookie("TOKEN")},
 						id: 'Reload',
 						loading:true,
-						width:1680, 
+						height:400,
 						page: true ,//开启分页
 						text: {
 							none: '当前没有可报名的竞赛信息'
@@ -166,7 +166,7 @@
 								
 								console.log($(this).attr('isEnrolled'))
 								if($(this).attr('isEnrolled')=='1'){
-$.ajax({
+								$.ajax({
 									type: "GET",
 									url: 'http://localhost:8080/Curriculum/Enlist/getTeam/'+$.cookie("username")+
 										 '?competitionId='+this.id.substr(4),

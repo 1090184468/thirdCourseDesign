@@ -71,7 +71,7 @@
 						headers:{'TOKEN':$.cookie("TOKEN")},
 						id: 'Reload',
 						page: true ,//开启分页
-						width:1680,
+						height:400,
 						
 						text: {
 							none: '没有竞赛信息'
@@ -104,19 +104,60 @@
 								}}
 							]
 						],done: function(res){
-							console.log(res);
-							console.log($.cookie("username"));
+							$(".myTeam").click(function(){
+								console.log($(this).attr('isEnrolled'))
+								if($(this).attr('isEnrolled')=='1'){
+									$.ajax({
+										type: "GET",
+										url: 'http://localhost:8080/Curriculum/Enlist/getTeam/'+$.cookie("username")+
+											 '?competitionId='+this.id.substr(4),
+										headers:{'TOKEN':$.cookie("TOKEN")},
+										dataType: "json",
+										data: {},
+										beforeSend: function() {
+											index = layer.msg('加载中。。', {
+												icon: 16
+											});
+										},
+										success: function(result) {
+											console.log(result);	
+											var resultUI =  '<div style="text-align:center;font-size:20px">我的团队\
+																		</div><div style="padding: 50px; line-height: 22px; background-color: #393D49;\
+																		color: #fff; font-weight: 300;">团队ID:'+
+																		competitonId+
+																		'<br>\
+																		团队队长:'+result.data.userid+'<br>';
+																		
+											for(j = 0; j < result.data.teamusers.length; j++) {	
+												var x = j+1;
+												resultUI=resultUI+'团队队员'+x+':'+result.data.teamusers[j]+'<br>';
+											}
+											resultUI=resultUI+'</div>';							
+											layer.open({
+												type: 1
+												,title: false //不显示标题栏
+												,closeBtn: false
+												,area: '400px;'
+												,shade: 0.8
+												,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+												,btn: ['关闭']
+												,btnAlign: 'c'
+												,moveType: 1 //拖拽模式，0或者1
+												,content: resultUI
+												,btn1:function(){
+													layer.closeAll()
+												}
+											});
+										}
+									})
+								}else{
+									layer.msg('你没有参加这场竞赛!', {time:1000,icon: 5,shift:6});
+								}
+							})
 						}
 						
 					});
-				$(".myTeam").click(function(){
-					console.log($(this).attr('isEnrolled'))
-					if($(this).attr('isEnrolled')=='1'){
-						alert(this.id.substr(4));
-					}else{
-						layer.msg('你没有参加这场竞赛!', {time:1000,icon: 5,shift:6});
-					}
-				})
+				
 				$("#updatePassword").click(function() {
 								showModifyLayer();
 								This=this;

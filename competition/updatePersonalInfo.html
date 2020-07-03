@@ -42,7 +42,7 @@
 					 <div class="layui-form-item">
 					    <label class="layui-form-label">性别：</label>
 					    <div class="layui-input-inline">
-					      <select name="sex" lay-verify="required">
+					      <select id="sex" name="sex" lay-verify="required">
 							<option value="1" selected="selected">男</option>
 					        <option value="0">女</option>
 					      </select>
@@ -85,18 +85,21 @@
 					//请求用户的信息
 					$.ajax({
 						type: "Get",
-						url: "http://localhost:8080/Curriculum/User/allUser/"+$.cookie("userid")/* +$("#username").val()+
+						url: "http://localhost:8080/Curriculum/User/getUser/"+$.cookie("userid")/* +$("#username").val()+
 					"?user_phone="+$("#phone").val()+"&username="+$("#username").val()+"&sex="+$("#sex").val()+"&email="+$("#email").val()+
 					"?cotent="+$("#personalProfile").val() */,
 						headers:{'TOKEN':$.cookie("TOKEN")},
 						dataType: "json",
 						beforeSend: function() {
-							index = layer.msg('加载中。。', {
-								icon: 16
-							});
+							index = layer.msg('加载中。。',{time:200,icon: 16,shift:6});
 						},
 						success: function(result) {
-							console.log(result)
+							var user = result.data;
+							$("#username").val(user.username);
+							$("#phone").val(user.phone);
+							$("#email").val(user.email);
+							$("#sex").val(user.sex);
+							$("#personalProfile").val(user.content);
 						}
 					})
 					$("#updatePassword").click(function() {
@@ -124,8 +127,26 @@
 
 					//监听提交
 					form.on('submit(submit)', function(data) {
-						layer.alert(JSON.stringify(data.field), {
-							title: '最终的提交信息'
+						$.ajax({
+							type: "Get",
+							url: "http://localhost:8080/Curriculum/User/modifyUserMsg/"+$.cookie("userid") +
+						"?user_phone="+$("#phone").val()+"&username="+$("#username").val()+"&sex="+$("#sex").val()+"&email="+$("#email").val()+
+						"&content="+$("#personalProfile").val() ,
+							headers:{'TOKEN':$.cookie("TOKEN")},
+							dataType: "json",
+							success: function(result) {
+								if(result.code=="0"){
+									
+									layer.msg('修改成功', {time:1000,icon: 1,shift:6});
+									setTimeout(function(){
+										window.location.reload();
+									},500)
+									
+								}else{
+									layer.msg('修改失败', {time:1000,icon: 2,shift:6});
+								}
+								
+							}
 						})
 						return false;
 					});

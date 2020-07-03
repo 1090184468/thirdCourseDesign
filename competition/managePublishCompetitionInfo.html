@@ -255,7 +255,7 @@
 											layer.msg('前面五项为必填项', {time:1000,icon: 2,shift:6});
 											return false;
 										}
-										competitionNamePattern=/^[a-zA-Z0-9\u4E00-\u9FA5]{4,20}$/;
+										competitionNamePattern=/^[a-zA-Z0-9+#\u4E00-\u9FA5]{4,20}$/;
 										if(!competitionNamePattern.test($('#competitionName').val())){
 											layer.msg('竞赛名格式不对哦^-^ 要4-20位中文,数字,大小写字母组合', {time:1000,icon: 2,shift:6});
 											return false;
@@ -277,9 +277,10 @@
 											},
 											success: function(result) {
 												layer.close(index);
-												window.location.href="publishCompetitionInfo.html";
-												var resultBean = JSON.parse(result);
-												console.log(result);
+												layer.msg('编辑竞赛成功!!!', {time:1000,icon: 1,shift:6});
+												setTimeout(function(){
+													window.location.reload();
+												},900)
 											}
 										})
 										layer.closeAll();
@@ -336,9 +337,11 @@
 											},
 											success: function(result) {
 												layer.close(index);
-												window.location.href="managePublishCompetitionInfo.html";
-												var resultBean = JSON.parse(result);
-												console.log(result);
+												layer.msg('删除竞赛成功!!!', {time:1000,icon: 1,shift:6});
+												setTimeout(function(){
+													window.location.reload();
+												},900)
+												
 											}
 										})
 									},

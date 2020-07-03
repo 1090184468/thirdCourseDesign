@@ -168,7 +168,7 @@
 					//自定义验证规则
 					form.verify({
 						competitionName: [
-							/^[a-zA-Z0-9\u4E00-\u9FA5]{4,20}$/, '竞赛名格式不对哦^-^ 要4-20位中文,数字,大小写字母组合',
+							/^[a-zA-Z0-9+#\u4E00-\u9FA5]{4,20}$/, '竞赛名格式不对哦^-^ 要4-20位中文,数字,大小写字母组合',
 						],
 						type: function(value) {
 							if (value == "") {
@@ -211,9 +211,6 @@
 					
 					//监听提交
 					form.on('submit(submit)', function(data) {
-						layer.alert(JSON.stringify(data.field), {
-							title: '最终的提交信息'
-						})
 						$.ajax({
 							type: "GET",
 							url: 'http://localhost:8080/Curriculum/Competition/addCompetition/'+$.cookie("id")+'?'
@@ -225,7 +222,7 @@
 							dataType: "json",
 							contentType:"application/text;charset=utf-8",
 							beforeSend: function() {
-								index = layer.msg('加载中。。', {
+								index = layer.msg('加载中。。', {time:1000,
 									icon: 16
 								});
 							},

@@ -216,8 +216,8 @@
 							url: 'http://localhost:8080/Curriculum/Competition/addCompetition/'+$.cookie("id")+'?'
 							+'competitionName='+$("#competitionName").val()+'&startCompetition='+$("#competitionStartTime").val()
 							+'&endCompetition='+$("#competitionEndTime").val()+'&enrollStartTime='+$("#enrollCompetitionStartTime").val()
-							+'&enrollEndTime='+$("#enrollCompetitionEndTime").val()+'&num='+$("#num").val()
-							+'&teamNum='+100+'&type='+$("#type").val(),
+							+'&enrollEndTime='+$("#enrollCompetitionEndTime").val()+'&num='+0
+							+'&teamNum='+$("#num").val()+'&type='+$("#type").val(),
 							headers:{'TOKEN':$.cookie("TOKEN")},
 							dataType: "json",
 							contentType:"application/text;charset=utf-8",

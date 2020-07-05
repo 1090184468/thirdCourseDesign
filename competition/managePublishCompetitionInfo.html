@@ -173,7 +173,7 @@
 										return d.enrollStartTime+"<br>至 "+d.enrollEndTime;
 								}}
 							, {field: 'startCompetition',title: '竞赛开赛时间',unresize:true,align: 'center',templet: function(d) {
-										return d.enrollStartTime+"<br>至 "+d.endCompetition;
+										return d.startCompetition+"<br>至 "+d.endCompetition;
 								}}
 							, {field: 'countdown',title: '到计时',unresize:true,width:200,align: 'center',templet: function(d) {
 										var time=d.startCompetition.split(" ");
@@ -322,8 +322,7 @@
 									shade: 0.3,
 									btn: ['确定', '取消'],
 									btn1: function(index, layero) {
-										var kk = data.competitionId;
-										alert(kk);
+										
 										$.ajax({
 											type: "GET",
 											url: 'http://localhost:8080/Curriculum/Competition/delCompetition/'+data.competitionId,
